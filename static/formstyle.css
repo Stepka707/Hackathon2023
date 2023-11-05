@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+/* Basic styling for the navigation panel */
+.navigation-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #333; /* Background color of the navigation panel */
+    color: #fff; /* Text color */
+}
+
+/* Style the logo */
+.logo img {
+    width: 100px; /* Adjust the logo's width */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+/* Style the navigation links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px; /* Spacing between links */
+}
+
+.nav-links li {
+    text-transform: uppercase; /* Convert text to uppercase */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #fff; /* Link text color */
+    font-size: 22px; /* Increase font size (adjust to your preference) */
+}
+
+/* Hover effect for links */
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+
+/*------------*/
+/*
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}*/
+
+main {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px ;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label, input, textarea {
+    margin: 10px 0;
+}
+
+input, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+}

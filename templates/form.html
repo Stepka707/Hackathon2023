@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title> 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='formstyle.css') }}">
+
+    <style>
+        /* Center the logo both horizontally and vertically */
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ensure the container takes up the full viewport height */
+        }
+        
+        /* Style the logo */
+        .logo {
+            width: 200px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+    </header>
+
+<!---------Top Panel-------->
+
+<nav class="navigation-panel">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+    </div>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/form">Form</a></li>
+        <li><a href="/contact">Contact</a></li>
+    </ul>
+</nav>
+<!-------------------------->
+
+    <main>
+      <!--  <form method="POST" action="/submit"> -->
+        <form method="POST" action="{{ url_for('submit') }}">
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+    
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+    
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+    
+            <input type="submit" value="Submit">
+        </form>    
+
+
+    </main>
+
+    <footer>
+    </footer>
+
+</body>
+</html>
+
+
+
+
