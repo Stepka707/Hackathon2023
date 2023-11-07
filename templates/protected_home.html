@@ -19,6 +19,13 @@
         .logo {
             width: 200px;
         }
+
+         /* Add CSS styles for text alignment */
+         .email-container {
+            text-align: left;
+            float: left;
+            width: 50%;
+        }
     </style>
 
 </head>
@@ -33,16 +40,14 @@
     <div class="logo">
         <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
     </div>
+    <div class="email-container">
+        <p>Welcome {{ email }}</p>
+    </div>
     <ul class="nav-links">
-
-        <li><a href="/">Home</a></li>
-        {% if current_user.is_authenticated %}
-            <li><a href="/protected">Form</a></li>
-            <li>User: {{ current_user.email }}</li>
-        {% else %}
-        <!---<li><a href="/contact">Contact</a></li>-->
-        <li><a href="/login">Login</a></li>
-        {% endif %}
+        <li><a href="/protected_home">Home</a></li>
+        <li><a href="/contact">Information</a></li>
+        <li><a href="/protected">Form</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
 </nav>
 <!------------------------->

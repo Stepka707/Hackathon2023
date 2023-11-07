@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
     <title>Protected Page</title>
@@ -8,3 +8,71 @@
     <a href="{{ url_for('logout') }}">Logout</a>
 </body>
 </html>
+--->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title> 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='formstyle.css') }}">
+
+    <style>
+        /* Center the logo both horizontally and vertically */
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ensure the container takes up the full viewport height */
+        }
+        
+        /* Style the logo */
+        .logo {
+            width: 200px;
+        }
+
+         /* Add CSS styles for text alignment */
+         .email-container {
+            text-align: left;
+            float: left;
+            width: 50%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+    </header>
+
+<!---------Top Panel-------->
+
+<nav class="navigation-panel">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+    </div>
+    <div class="email-container">
+        <p>Welcome {{ email }}</p>
+    </div>
+    <ul class="nav-links">
+        <li><a href="/protected_home">Home</a></li>
+        <li><a href="/contact">Information</a></li>
+        <li><a href="/protected">Form</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</nav>
+<!-------------------------->
+
+    <main>
+        
+    </main>
+
+    <footer>
+    </footer>
+
+</body>
+</html>
+
+
+
+
