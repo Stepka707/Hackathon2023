@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session,flash
+
 import sqlite3
 import hashlib
 import os
+import bcrypt
+
 
 app = Flask(__name__)
-#app.secret_key = 'your_secret_key'
+app.secret_key = 'your_secret_key'
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
 
 @app.route('/')
 def index():
@@ -49,36 +49,127 @@ def submit():
         conn.close()
 
         return redirect(url_for('form'))
-    
-#login
+
+#--------------FUNCTIONS--------------
 
 def hash_password(password, salt):
-    hash_obj = hashlib.sha256(salt.encode() + password.encode())
-    return hash_obj.hexdigest()
+    # Generate a salted hash of the password
+    salted_password = salt.encode('utf-8') + password.encode('utf-8')
+   # hashed_password = bcrypt.hashpw(salted_password, bcrypt.gensalt())
+    hashed_password = bcrypt.hashpw(salted_password, salt.encode('utf-8'))
+
+    # Return the hashed password as a bytes object
+    return hashed_password
 
 
-@app.route('/register', methods=['POST'])
-def register():
-    #username = request.form['username']
-    email = request.form['email']
-    password = request.form['password']
-    role = 'user'  # Assign a default role, e.g., 'user'
+def generate_salt():
+    return bcrypt.gensalt().decode('utf-8')
 
 
-    # Generate a random salt for each user (store it in the database)
-    salt = os.urandom(16).hex()
-    hashed_password = hash_password(password, salt)
+#----------LOGIN------------------
 
+@app.route('/userlogin', methods=['POST'])
+def userlogin():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        # Perform user authentication here
+        if user_is_authenticated(email, password):
+            # Create a session for the user
+            session['user_username'] = email
+            
+            return redirect(url_for('protected'))  # Redirect to a protected page
+
+        # Handle unsuccessful login (e.g., show an error message)
+        else:
+            # Authentication failed, show an error message using flash
+            flash('Incorrect username or password. Please try again.', 'error')
+            return redirect(url_for('login'))  # Redirect back to the login form
+
+
+def user_is_authenticated(email, password):
     conn = sqlite3.connect('user_database.db')
     cursor = conn.cursor()
 
-    cursor.execute('INSERT INTO users ( email, password, role) VALUES (?, ?, ?)', ( email, hashed_password, role))
-  
-    conn.commit()
+    # Check if the email exists in the database
+    cursor.execute('SELECT email, password, salt FROM users WHERE email = ?', (email,))
+
+    user_data = cursor.fetchone()
+    print("user_data",user_data)
     conn.close()
 
+    if user_data is not None:
+        stored_password = user_data[1]
+        salt = user_data[2]
+        
+        if password is not None and salt is not None:
+            # Hash the provided password with the stored salt
+           # hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt.encode('utf-8'))
+            hashed_password = hash_password(password,salt)
+            print("password",password)
+            print("salt",salt)
+            print("hashed_password",hashed_password)
+            print("stored_password",stored_password)
+
+             # Compare the hashed passwords
+            if hashed_password == stored_password:
+                return True  # Authentication successful
+
+    return False  # Authentication failed
+
+@app.route('/protected')
+def protected():
+    # Check if the user is logged in using the session
+    if 'user_username' in session:
+        email = session['user_username']
+
+        # Render the dashboard with user-specific data
+        return render_template('protected.html', email=email)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/logout')
+def logout():
+    # Clear the session to log the user out
+    session.clear()
     return redirect(url_for('login'))
-###
+    
+#---------------------------------
+
+#-------Registration--------------
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+
+        email = request.form['email']
+        password = request.form['password']
+        password_confirm = request.form['password-confirm']
+        role = 'user'  # Assign a default role, e.g., 'user'
+      
+        if password != password_confirm:
+            error = "Passwords do not match."
+        else:
+            # Generate a new salt
+            salt = generate_salt()
+            print("password",password)
+            print("salt",salt)
+
+            hashed_password = hash_password(password, salt)
+
+            conn = sqlite3.connect('user_database.db')
+            cursor = conn.cursor()
+
+            cursor.execute('INSERT INTO users (email, password, role, salt) VALUES (?, ?, ?, ?)',
+                              (email, hashed_password, role, salt))
+
+            conn.commit()
+            conn.close()
+
+            return redirect(url_for('login'))
+
+    return render_template('register.html')
+#---------------
 
 if __name__ == '__main__':
     app.run(debug=True)

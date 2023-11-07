@@ -31,7 +31,6 @@
         </div>
      <ul class="nav-links">
          <li><a href="/">Home</a></li>
-         <li><a href="/form">Form</a></li>
          <li><a href="/contact">Contact</a></li>
          <li><a href="/login">Login</a></li>
      </ul>
@@ -43,8 +42,8 @@
     <div class="centered-container">
      
     <div class="login-container">
-      <!--  <h2>Login</h2> -->
-        <form action="/register" method="post">
+      
+        <form action="/userlogin" method="post">
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
@@ -55,6 +54,9 @@
             </div>
             <button type="submit">Login</button>
         </form>
+        
+        <div class="spacer"></div> <!-- Add a spacer div with CSS class -->
+        <a href="/register">Register</a>
     </div>
 </div>
 

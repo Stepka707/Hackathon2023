@@ -72,6 +72,10 @@ button:hover {
     background-color: #0056b3;
 }
 
+.spacer {
+    margin-top: 10px; /* Adjust the margin-top value to control the spacing */
+}
+
 /* Basic styling for the navigation panel */
 .navigation-panel {
     display: flex;
