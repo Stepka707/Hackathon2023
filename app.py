@@ -117,6 +117,34 @@ def hash_password(password, salt):
 def generate_salt():
     return bcrypt.gensalt().decode('utf-8')
 
+def user_is_authenticated(email, password):
+    conn = sqlite3.connect('user_database.db')
+    cursor = conn.cursor()
+
+    # Check if the email exists in the database
+    cursor.execute('SELECT email, password, salt FROM users WHERE email = ?', (email,))
+
+    user_data = cursor.fetchone()
+    conn.close()
+    print("user_data",user_data)
+
+    if user_data is not None:
+        stored_password = user_data[1]
+        salt = user_data[2]
+        print("stored_password",stored_password)
+        print("salt",salt)
+        
+        if password is not None and salt is not None:
+            # Hash the provided password with the stored salt
+            hashed_password = hash_password(password,salt)
+            print("hashed_password",hashed_password)
+             # Compare the hashed passwords
+            if hashed_password == stored_password:
+                return True  # Authentication successful
+
+    return False  # Authentication failed
+
+
 def is_valid_password(password):
     if len(password) < MIN_PASSWORD_LENGTH:
         return False
@@ -143,46 +171,23 @@ def userlogin():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+        print("email:",email)
+        print("password:",password)
 
         # Perform user authentication here
         if user_is_authenticated(email, password):
 
             # Create a session for the user
             session['user_username'] = email
-            
+            print("here")
             return redirect(url_for('protected'))  # Redirect to a protected page
 
         # Handle unsuccessful login (e.g., show an error message)
         else:
             # Authentication failed, show an error message using flash
+            print("here2")
             flash('Incorrect username or password. Please try again.', 'error')
             return redirect(url_for('login'))  # Redirect back to the login form
-
-
-def user_is_authenticated(email, password):
-    conn = sqlite3.connect('user_database.db')
-    cursor = conn.cursor()
-
-    # Check if the email exists in the database
-    cursor.execute('SELECT email, password, salt FROM users WHERE email = ?', (email,))
-
-    user_data = cursor.fetchone()
-    print("user_data",user_data)
-    conn.close()
-
-    if user_data is not None:
-        stored_password = user_data[1]
-        salt = user_data[2]
-        
-        if password is not None and salt is not None:
-            # Hash the provided password with the stored salt
-            hashed_password = hash_password(password,salt)
-        
-             # Compare the hashed passwords
-            if hashed_password == stored_password:
-                return True  # Authentication successful
-
-    return False  # Authentication failed
 #---------------------------------
 
 #-------Registration--------------
@@ -204,9 +209,6 @@ def register():
         else:
             # Generate a new salt
             salt = generate_salt()
-            print("password",password)
-            print("salt",salt)
-
             hashed_password = hash_password(password, salt)
 
             conn = sqlite3.connect('user_database.db')

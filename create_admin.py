@@ -2,18 +2,22 @@ import sqlite3
 import hashlib
 import os
 import getpass
+import bcrypt
 
 # Function to generate a random salt
 def generate_salt():
-    return os.urandom(16).hex()
+    return bcrypt.gensalt().decode('utf-8')
 
 # Function to hash the password using a salt
 def hash_password(password, salt):
-    # Use a secure hashing algorithm, such as SHA-256
-    hasher = hashlib.sha256()
-    password_salt = password + salt
-    hasher.update(password_salt.encode('utf-8'))
-    return hasher.hexdigest()
+    # Generate a salted hash of the password
+    salted_password = salt.encode('utf-8') + password.encode('utf-8')
+   # hashed_password = bcrypt.hashpw(salted_password, bcrypt.gensalt())
+    hashed_password = bcrypt.hashpw(salted_password, salt.encode('utf-8'))
+
+    # Return the hashed password as a bytes object
+    return hashed_password
+
 
 def create_eatery(email, password):
     salt = generate_salt()
