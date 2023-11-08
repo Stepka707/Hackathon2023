@@ -19,6 +19,14 @@
         .logo {
             width: 200px;
         }
+
+        /* Styling for error messages */
+        .alert-error {
+            background-color: #ff9999;
+            border-color: #cc3333;
+            color: #cc0000;
+        }
+        
     </style>
 </head>
 <body>
@@ -34,6 +42,17 @@
  </ul>
 </nav>
 <!------------------------->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+                <li class="alert alert-{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+<!-------------------->
+
 <div class="centered-container">
     <div class="login-container">
 

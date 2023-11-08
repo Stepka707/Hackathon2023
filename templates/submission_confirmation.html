@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Submission Confirmation</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form</title> 
@@ -26,15 +27,14 @@
             float: left;
             width: 50%;
         }
+
+        a {
+            text-align: center; /* Center-align the h1 and p elements */
+        }
     </style>
-
 </head>
-
 <body>
-    <header>
-    </header>
-
-<!---------Top Panel-------->
+    <!---------Top Panel-------->
 <nav class="navigation-panel">
     <div class="logo">
         <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
@@ -50,35 +50,12 @@
     </ul>
 </nav>
 <!-------------------------->
-<main>
-    <h1>Personal Information Form</h1>
-    <form action="/submit" method="post">
-        <label for="zip_code">Zip Code:</label>
-        <input type="text" id="zip_code" name="zip_code" required><br><br>
-        
-        <label for="annual_income">Annual Income:</label>
-        <input type="number" id="annual_income" name="annual_income" required><br><br>
-        
-        <label for="dependents">Number of Dependents:</label>
-        <input type="number" id="dependents" name="dependents" required><br><br>
-
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select><br><br>
-
-        <input type="submit" value="Submit">
-    </form>
-</main>
-
-<footer>
-</footer>
+    <p style="text-align: center;">Your data has been successfully submitted. Thank you for providing your information!</p>
+    <!--<a style="text-align: center;", href="/protected_home">Return to the Home</a> -->
+    <div style="text-align: center;">
+        <a href="/protected_home">Return to the Home</a>
+      </div>
+      
 
 </body>
 </html>
-
-
-
-

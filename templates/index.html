@@ -22,8 +22,8 @@
     </style>
 
 </head>
-<body>
 
+<body>
 
 <header>
 </header>
@@ -36,13 +36,8 @@
     <ul class="nav-links">
 
         <li><a href="/">Home</a></li>
-        {% if current_user.is_authenticated %}
-            <li><a href="/protected">Form</a></li>
-            <li>User: {{ current_user.email }}</li>
-        {% else %}
-        <!---<li><a href="/contact">Contact</a></li>-->
         <li><a href="/login">Login</a></li>
-        {% endif %}
+       
     </ul>
 </nav>
 <!------------------------->
@@ -63,10 +58,9 @@
     </ul>
 
 </main>
-<footer>
-    <!-- Footer content goes here -->
-</footer>
 
+<footer>
+</footer>
 
 </body>
 </html>

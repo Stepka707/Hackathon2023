@@ -1,44 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, session,flash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
-
 
 import sqlite3
 import hashlib
 import os
 import bcrypt
+import re
 
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
-
-#---------POSIBLE CAN BE DELETED----------
-# Configure Flask-Login
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-class User(UserMixin):
-    def __init__(self, email):
-        self.email = email
-
-    def get_id(self):
-        return self.email
-
-login_manager = LoginManager(app)
-
-# Define a function to query the database and load a user by email
-@login_manager.user_loader
-def load_user(email):
-    connection = sqlite3.connect('user_database.db')  
-    cursor = connection.cursor()
-    cursor.execute("SELECT email FROM users WHERE email = ?", (email,))
-    user_data = cursor.fetchone()
-    connection.close()
-
-    if user_data:
-        return User(user_data[0])  # Create a User instance with the email
-    else:
-        return None  # User not found
-#---------------------------------
 
 @app.route('/')
 def home():
@@ -87,34 +57,51 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-#@app.route('/submit', methods=['POST'])
-#def submit():
- #  if request.method == 'POST':
-   #     name = request.form['name']
-   #     email = request.form['email']
-   #     message = request.form['message']
+#---------FORM--------------------------
+# SQLite database setup
+conn = sqlite3.connect('user_database.db')
+cursor = conn.cursor()
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS personal_info (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        zip_code TEXT,
+        annual_income INTEGER,
+        dependents INTEGER,
+        gender TEXT
+    )
+''')
+conn.commit()
+conn.close()
 
-        # Connect to the SQLite database
-     #   conn = sqlite3.connect('mydatabase.db')
-     #   cursor = conn.cursor()
+@app.route('/submit', methods=['POST'])
+def submit():
+    zip_code = request.form['zip_code']
+    annual_income = int(request.form['annual_income'])
+    dependents = int(request.form['dependents'])
+    gender = request.form['gender']
 
-        # Create a table if it doesn't exist
-       # cursor.execute('''
-        #    CREATE TABLE IF NOT EXISTS contacts (
-         #       name TEXT,
-          #      email TEXT,
-          #      message TEXT
-          #  )
-       # ''')
+    conn = sqlite3.connect('user_database.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO personal_info (zip_code, annual_income, dependents, gender)
+        VALUES (?, ?, ?, ?)
+    ''', (zip_code, annual_income, dependents, gender))
+    conn.commit()
+    conn.close()
 
-        # Insert data into the table
-       # cursor.execute('INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)', (name, email, message))
+    #return redirect(url_for('protected'))
+    email = session['user_username']
+    return render_template('submission_confirmation.html', email=email)
 
-       # conn.commit()
-       # conn.close()
 
-       # return redirect(url_for('form'))
 
+#---------------------------------------
+#-----PASSWORD POLICY RULES-------------
+MIN_PASSWORD_LENGTH = 8
+REQUIRE_UPPERCASE = True
+REQUIRE_LOWERCASE = True
+REQUIRE_DIGIT = True
+REQUIRE_SPECIAL_CHAR = True
 #--------------FUNCTIONS--------------
 
 def hash_password(password, salt):
@@ -129,6 +116,24 @@ def hash_password(password, salt):
 
 def generate_salt():
     return bcrypt.gensalt().decode('utf-8')
+
+def is_valid_password(password):
+    if len(password) < MIN_PASSWORD_LENGTH:
+        return False
+
+    if REQUIRE_UPPERCASE and not any(char.isupper() for char in password):
+        return False
+
+    if REQUIRE_LOWERCASE and not any(char.islower() for char in password):
+        return False
+
+    if REQUIRE_DIGIT and not any(char.isdigit() for char in password):
+        return False
+
+    if REQUIRE_SPECIAL_CHAR and not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        return False
+
+    return True
 
 
 #----------LOGIN------------------
@@ -171,13 +176,8 @@ def user_is_authenticated(email, password):
         
         if password is not None and salt is not None:
             # Hash the provided password with the stored salt
-           # hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt.encode('utf-8'))
             hashed_password = hash_password(password,salt)
-            print("password",password)
-            print("salt",salt)
-            print("hashed_password",hashed_password)
-            print("stored_password",stored_password)
-
+        
              # Compare the hashed passwords
             if hashed_password == stored_password:
                 return True  # Authentication successful
@@ -197,6 +197,10 @@ def register():
       
         if password != password_confirm:
             error = "Passwords do not match."
+
+        if not is_valid_password(password):
+            flash('Password does not meet the password policy requirements.', 'error')
+       
         else:
             # Generate a new salt
             salt = generate_salt()
