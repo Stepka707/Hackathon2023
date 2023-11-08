@@ -19,31 +19,35 @@ def create_eatery(email, password):
     salt = generate_salt()
     hashed_password = hash_password(password, salt)
 
+    try:
+        # Connect to the SQLite database (or create it if it doesn't exist)
+        with sqlite3.connect('user_database.db') as conn:
+            cursor = conn.cursor()
 
-# Connect to the SQLite database (or create it if it doesn't exist)
-conn = sqlite3.connect('user_database.db')
-cursor = conn.cursor()
+            # Create the users table if it doesn't exist
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS users (
+                    email TEXT PRIMARY KEY,
+                    password TEXT,
+                    salt TEXT,
+                    role TEXT
+                )
+            ''')
 
-# Create the users table if it doesn't exist
-cursor.execute('''CREATE TABLE IF NOT EXISTS users
-                    (email TEXT PRIMARY KEY, password TEXT, salt TEXT, role TEXT)'')
+            # Check if the email already exists in the database
+            cursor.execute("SELECT email FROM users WHERE email=?", (email,))
+            existing_user = cursor.fetchone()
 
-        # Check if the email already exists in the database
-        cursor.execute("SELECT email FROM users WHERE email=?", (email,))
-        existing_user = cursor.fetchone()
-
-        if existing_user:
-            print("User with this email already exists.")
-        else:
-            # Insert the new eatery with role 'admin' into the users table
-            cursor.execute("INSERT INTO users (email, password, salt, role) VALUES (?, ?, ?, ?)", (email, hashed_password, salt, 'admin'))
-            conn.commit()
-            print("Eatery created successfully!")
+            if existing_user:
+                print("User with this email already exists.")
+            else:
+                # Insert the new eatery with role 'admin' into the users table
+                cursor.execute("INSERT INTO users (email, password, salt, role) VALUES (?, ?, ?, ?)", (email, hashed_password, salt, 'admin'))
+                conn.commit()
+                print("Eatery created successfully")
 
     except sqlite3.Error as e:
         print("SQLite error:", e)
-    finally:
-        conn.close()
 
 if __name__ == '__main__':
     email = input("Enter email: ")
