@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website Title</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* Center the logo both horizontally and vertically */
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ensure the container takes up the full viewport height */
+        }
+        
+        /* Style the logo */
+        .logo {
+            width: 200px;
+        }
+
+         /* Add CSS styles for text alignment */
+         .email-container {
+            text-align: left;
+            float: left;
+            width: 50%;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<header>
+</header>
+
+<!---------Top Panel-------->
+<nav class="navigation-panel">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+    </div>
+    <div class="email-container">
+        <p>Welcome {{ email }}. You are admin.</p>
+    </div>
+    <ul class="nav-links">
+        <li><a href="/admin_home">Home</a></li>
+        <li><a href="/admin_page">Analytics</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</nav>
+<!------------------------->
+
+
+<main>
+   
+    <h1>Welcome to My Web Page</h1>
+    <p>This is a paragraph of text on my HTML page. You can add more paragraphs, links, lists, and other HTML elements to create your content.</p>
+    
+    <h2>Another Section</h2>
+    <p>Here's another paragraph of text in a different section of the page.</p>
+    
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+
+</main>
+<footer>
+    <!-- Footer content goes here -->
+</footer>
+
+
+</body>
+</html>

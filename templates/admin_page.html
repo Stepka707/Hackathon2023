@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website Title</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* Center the logo both horizontally and vertically */
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ensure the container takes up the full viewport height */
+        }
+        
+        /* Style the logo */
+        .logo {
+            width: 200px;
+        }
+
+         /* Add CSS styles for text alignment */
+         .email-container {
+            text-align: left;
+            float: left;
+            width: 50%;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<header>
+</header>
+
+<!---------Top Panel-------->
+<nav class="navigation-panel">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+    </div>
+    <div class="email-container">
+        <p>Welcome {{ email }}. You are admin.</p>
+    </div>
+    <ul class="nav-links">
+        <li><a href="/admin_home">Home</a></li>
+        <li><a href="/admin_page">Analytics</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</nav>
+<!------------------------->
+
+
+<main>
+   
+    <h1>Analysis Results</h1>
+    <p>Total Records: {{ total_records }}</p>
+    <p>Average Income: {{ average_income }}</p>
+    <p>Gender Statistics: {{ gender_statistics }}</p>
+
+    <p>Click the button below to download the data:</p>
+
+    <!-- Create a download button -->
+    <a href="{{ url_for('download_data') }}">
+        <button>Download All Data</button>
+    </a>
+    <!--
+    <h2>Personal Info Data</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Zip Code</th>
+                <th>Annual Income</th>
+                <th>Dependents</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for info in personal_info_data %}
+                <tr>
+                    <td>{{ info[0] }}</td>
+                    <td>{{ info[1] }}</td>
+                    <td>{{ info[2] }}</td>
+                    <td>{{ info[3] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    -->
+
+</main>
+<footer>
+</footer>
+
+
+</body>
+</html>
