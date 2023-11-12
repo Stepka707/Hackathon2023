@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website Title</title>
+    <title>NALAM</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
@@ -20,12 +20,7 @@
             width: 200px;
         }
 
-         /* Add CSS styles for text alignment */
-         .email-container {
-            text-align: left;
-            float: left;
-            width: 50%;
-        }
+    
     </style>
 
 </head>
@@ -44,8 +39,8 @@
         <p>Welcome {{ email }}. You are admin.</p>
     </div>
     <ul class="nav-links">
-        <li><a href="/admin_home">Home</a></li>
-        <li><a href="/admin_page">Analytics</a></li>
+        <li><a href="/admin_page">Users Data</a></li>
+        <li><a href="/admin_home">MEDIA GUIDELINES</a></li>
         <li><a href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
 </nav>
@@ -54,18 +49,7 @@
 
 <main>
    
-    <h1>Welcome to My Web Page</h1>
-    <p>This is a paragraph of text on my HTML page. You can add more paragraphs, links, lists, and other HTML elements to create your content.</p>
-    
-    <h2>Another Section</h2>
-    <p>Here's another paragraph of text in a different section of the page.</p>
-    
-    <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
-    </ul>
-
+    <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vR45j4UNZrCI4lSZohr4lq_MISiSjnkU-KO8jX86lKZ5zYCFvCtjd1mOmr8XKjy2euzjCGw-TL6eYb_/embed?start=false&loop=false&delayms=60000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 </main>
 <footer>
     <!-- Footer content goes here -->

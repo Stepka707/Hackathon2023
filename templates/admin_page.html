@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website Title</title>
+    <title>NALAM</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
@@ -20,12 +20,7 @@
             width: 200px;
         }
 
-         /* Add CSS styles for text alignment */
-         .email-container {
-            text-align: left;
-            float: left;
-            width: 50%;
-        }
+       
     </style>
 
 </head>
@@ -44,8 +39,8 @@
         <p>Welcome {{ email }}. You are admin.</p>
     </div>
     <ul class="nav-links">
-        <li><a href="/admin_home">Home</a></li>
-        <li><a href="/admin_page">Analytics</a></li>
+        <li><a href="/admin_page">Users Data</a></li>
+        <li><a href="/admin_home">MEDIA GUIDELINES</a></li>
         <li><a href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
 </nav>
@@ -53,19 +48,60 @@
 
 
 <main>
-   
-    <h1>Analysis Results</h1>
+    <p>Click the button below to download all users data:</p>
+
+    
+    <a href="{{ url_for('download_data') }}">
+        <button>Download All Data</button>
+    </a>
+
+    <h2>Personal Info </h2>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Street Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Country</th>
+                <th>Zip Code</th>
+                <th>Supported Girl</th>
+                <th>Donation Amount</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for info in user_info %}
+                <tr>
+                    <td>{{ info[0] }}</td>
+                    <td>{{ info[1] }}</td>
+                    <td>{{ info[2] }}</td>
+                    <td>{{ info[3] }}</td>
+                    <td>{{ info[4] }}</td>
+                    <td>{{ info[5] }}</td>
+                    <td>{{ info[6] }}</td>
+                    <td>{{ info[7] }}</td>
+                    <td>{{ info[8] }}</td>
+                    <td>{{ info[9] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!--
     <p>Total Records: {{ total_records }}</p>
     <p>Average Income: {{ average_income }}</p>
     <p>Gender Statistics: {{ gender_statistics }}</p>
 
     <p>Click the button below to download the data:</p>
 
-    <!-- Create a download button -->
+    
     <a href="{{ url_for('download_data') }}">
         <button>Download All Data</button>
     </a>
-    <!--
+    
     <h2>Personal Info Data</h2>
     <table>
         <thead>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NALAM</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='loginstyle.css') }}">
+
+    <style>
+        /* Center the logo both horizontally and vertically */
+        /*.center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        } */
+        
+        /* Style the logo */
+        .logo {
+            width: 200px;
+        }
+
+        /* Styling for error messages */
+        .alert-error {
+            background-color: #ff9999;
+            border-color: #cc3333;
+            color: #cc0000;
+        }
+/*
+        label {
+            flex: 1;
+            text-align: left;
+            padding-right: 10px;
+        } */
+
+        /*
+        .login-container {
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .form-columns {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            min-width: 120px;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        input {
+            flex: 2;
+        } */
+        /*----------*/
+        /*
+        .centered-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }*/
+
+        .login-container {
+            width: 80%;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        fieldset {
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+        label {
+            margin-bottom: 5px;
+            flex: 1;
+            text-align: left;
+            padding-right: 10px;
+        }
+
+        input,
+        select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            width: 350px; /* Adjust the width */
+            margin: 0 auto;
+        }
+
+
+        /*
+
+          button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+        }
+        .form-columns {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+       */
+    </style>
+</head>
+<body>
+  <!---------Top Panel-------->
+  <nav class="navigation-panel">
+    <div class="logo">
+     <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+    </div>
+ <ul class="nav-links">
+     <li><a href="/">Home</a></li>
+     <li><a href="/stories">Stories</a></li>
+     <li><a href="/donation">Donate</a></li>
+     <li><a href="/login">Login</a></li>
+ </ul>
+</nav>
+<!------------------------->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+                <li class="alert alert-{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+<!-------------------->
+
+<div class="centered-container">
+    <div class="login-container">
+        <form action="/register" method="post">
+
+            <div class="form-columns">
+                <fieldset>
+                    <legend>Your Information</legend>
+                    <div class="form-group">
+                        <label for="first-name">First Name:</label>
+                        <input type="text" id="first-name" name="first-name">
+                    
+                        <label for="last-name">Last Name:</label>
+                        <input type="text" id="last-name" name="last-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="street-address">Street Address:</label>
+                        <input type="text" id="street-address" name="street-address">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city">
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State:</label>
+                        <input type="text" id="state" name="state">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country:</label>
+                        <input type="text" id="country" name="country">
+                    </div>
+                    <div class="form-group">
+                        <label for="zip-code">Zip Code:</label>
+                        <input type="text" id="zip-code" name="zip-code">
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="form-columns">
+                <fieldset>
+                    <legend>Support Information</legend>
+                    <div class="form-group">
+                        <label for="supported-girl">Supported Girl:</label>
+                        <select id="supported-girl" name="supported-girl">
+                            <option value="pavithra">Pavithra</option>
+                            <option value="yamini">Yamini</option>
+                            <!-- Add more supported girls -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="donation-amount">Donation Amount (Minimum $400):</label>
+                        <input type="number" id="donation-amount" name="donation-amount" step="10.00" min="400" required>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="form-columns">
+                <fieldset>
+                    <legend>Registration Information</legend>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password-confirm">Confirm Password:</label>
+                        <input type="password" id="password-confirm" name="password-confirm" required>
+                    </div>
+                </fieldset>
+            </div>
+            
+            <button type="submit">Register and Support</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

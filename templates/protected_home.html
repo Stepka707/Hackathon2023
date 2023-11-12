@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website Title</title>
+    <title>NALAM</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 
     <style>
@@ -20,17 +20,12 @@
             width: 200px;
         }
 
-         /* Add CSS styles for text alignment */
-         .email-container {
-            text-align: left;
-            float: left;
-            width: 50%;
-        }
+        
     </style>
 
 </head>
-<body>
 
+<body>
 
 <header>
 </header>
@@ -45,9 +40,10 @@
     </div>
     <ul class="nav-links">
         <li><a href="/protected_home">Home</a></li>
-        <li><a href="/contact">Information</a></li>
-        <li><a href="/protected">Form</a></li>
+        <li><a href="/protected_story">Your Story</a></li>
+        <li><a href="/protected_donation">Donate</a></li>
         <li><a href="{{ url_for('logout') }}">Logout</a></li>
+       
     </ul>
 </nav>
 <!------------------------->
@@ -55,23 +51,36 @@
 
 <main>
    
-    <h1>Welcome to My Web Page</h1>
-    <p>This is a paragraph of text on my HTML page. You can add more paragraphs, links, lists, and other HTML elements to create your content.</p>
-    
-    <h2>Another Section</h2>
-    <p>Here's another paragraph of text in a different section of the page.</p>
-    
+    <h1>Building Brighter Futures for Orphaned Girls in India</h1>
+    <p>We are a dedicated and efficient, small nonprofit committed to empowering orphaned girls in Andhra Pradesh, India. Our primary focus is on providing education, basic healthcare, safety, and daily meals for more than 135 girls, opening doors to freedom from societal challenges.</p>
+    <p>Support Beyond Grade 10: Our mission doesn't stop at grade 10. We actively guide girls into grade 11 and 12, vocational courses, junior college, or higher education for life-changing empowerment where possible. Sponsor a girl today and make a long-term
+        impact.
+        </p>
+
+    <h1>What We Do</h1>
+    <p>Focused and needs-driven help means efficient resource allocation.</p>
     <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
+        <li>
+            <p><b>135+ orphans</b></p>
+            <p>Or more receive annual aid at the orphanage, or extended support into higher ed or vocational training for empowered futures.</p>
+        </li>
+        <li>
+            <p><b>$1.2/child/day</b></p>
+            <p>Low daily cost covers all essentials for orphan girls: Food, shelter, basic health, and education at the orphanage; approx. $4.2/day for higher ed or vocational training.</p>
+        </li>
+        <li>
+            <p><b>For 9+ years</b></p>
+            <p>Consistent, unwavering commitment to empowering India&rsquo;s orphan girls.</p>
+        </li>
+        <li>
+            <p><b>Only 5% OPEX</b></p>
+            <p>Around 5% overhead ensures around $950 of every $1,000 donation reach orphan girls..</p>
+        </li>
     </ul>
-
 </main>
-<footer>
-    <!-- Footer content goes here -->
-</footer>
 
+<footer>
+</footer>
 
 </body>
 </html>

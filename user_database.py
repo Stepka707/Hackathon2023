@@ -5,8 +5,8 @@ import os
 # Define a function to create the SQLite database and user table
 def create_database():
     # Check if the database file exists; if not, create it
-    if not os.path.exists('user_database.db'):
-        conn = sqlite3.connect('user_database.db')
+    if not os.path.exists('nalam_database.db'):
+        conn = sqlite3.connect('nalam_database.db')
         cursor = conn.cursor()
 
         # Create a user table with fields for username, email, and hashed password   
@@ -16,7 +16,11 @@ def create_database():
                 email TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL,
                 role TEXT NOT NULL,
-                salt TEXT
+                first_name TEXT,
+                last_name TEXT,
+                visiting TEXT CHECK (visiting IN ('yes', 'no')),
+                donation_amount REAL,
+                salt TEXT    
                        
             )
         ''')

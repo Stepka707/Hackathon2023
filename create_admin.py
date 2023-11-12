@@ -25,7 +25,7 @@ def create_eatery(email, password):
 
     try:
         # Connect to the SQLite database (or create it if it doesn't exist)
-        with sqlite3.connect('user_database.db') as conn:
+        with sqlite3.connect('nalam_database.db') as conn:
             cursor = conn.cursor()
 
             # Create the users table if it doesn't exist

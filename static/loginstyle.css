@@ -1,13 +1,3 @@
-/*body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-} */
 
 body {
     font-family: Arial, sans-serif;
@@ -60,7 +50,7 @@ button {
     width: 106%;
     padding: 10px;
    /* background-color: #007bff;*/
-    background-color: #333;
+    background-color: #25378A;
     color: #fff;
     border: none;
     border-radius: 3px;
@@ -82,7 +72,7 @@ button:hover {
     justify-content: space-between;
     align-items: center;
     padding: 5px;
-    background-color: #333; /* Background color of the navigation panel */
+    background-color: #25378A; /* Background color of the navigation panel */
     color: #fff; /* Text color */
 }
 

@@ -16,6 +16,18 @@ app.secret_key = 'your_secret_key'
 def home():
     return render_template('index.html')
 
+@app.route('/stories')
+def stories():
+    return render_template('stories.html')
+
+@app.route('/impact')
+def impact():
+    return render_template('impact.html')
+
+@app.route('/donation')
+def donation():
+    return render_template('donation.html')
+
 @app.route('/contact')
 def contact():
     # Check if the user is logged in using the session
@@ -31,14 +43,25 @@ def contact():
 def login():
     return render_template('login.html')
 
-@app.route('/protected')
-def protected():
+@app.route('/protected_donation')
+def protected_donation():
     # Check if the user is logged in using the session
     if 'user_username' in session:
         email = session['user_username']
 
         # Render the dashboard with user-specific data
-        return render_template('protected.html', email=email)
+        return render_template('protected_donation.html', email=email)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/protected_story')
+def protected_story():
+    # Check if the user is logged in using the session
+    if 'user_username' in session:
+        email = session['user_username']
+
+        # Render the dashboard with user-specific data
+        return render_template('protected_story.html', email=email)
     else:
         return redirect(url_for('login'))
     
@@ -48,13 +71,13 @@ def admin_page():
     if 'user_username' in session:
         email = session['user_username']
 
-        # Call the function to perform the analysis
-        analysis_result = analyze_personal_info()
-        gender_statistics = get_gender_statistics()
+        # Call the function to perform the analysis for the logged-in user
+        analysis_result = analyze_personal_info(email)
+        # gender_statistics = get_gender_statistics()
 
         if analysis_result:
             # Render the HTML template and pass the analysis results to it
-            return render_template('admin_page.html', email=email, **analysis_result,gender_statistics=gender_statistics)
+            return render_template('admin_page.html', email=email, user_info=analysis_result)
 
         else:
             return "Analysis failed due to a database error."
@@ -95,9 +118,13 @@ def download_data():
     return generate_csv()
 
 
+@app.route('/support-button', methods=['POST'])
+def upport_button():
+    return render_template('support_form.html')
+
 #---------FORM--------------------------
 # SQLite database setup
-conn = sqlite3.connect('user_database.db')
+conn = sqlite3.connect('nalam_database.db')
 cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS personal_info (
@@ -118,7 +145,7 @@ def submit():
     dependents = int(request.form['dependents'])
     gender = request.form['gender']
 
-    conn = sqlite3.connect('user_database.db')
+    conn = sqlite3.connect('nalam_database.db')
     cursor = conn.cursor()
     cursor.execute('''
         INSERT INTO personal_info (zip_code, annual_income, dependents, gender)
@@ -143,11 +170,11 @@ REQUIRE_SPECIAL_CHAR = True
 def generate_csv():
     try:
         # Connect to the SQLite database
-        conn = sqlite3.connect('user_database.db')
+        conn = sqlite3.connect('nalam_database.db')
         cursor = conn.cursor()
 
         # Query the personal_info table to fetch all records
-        cursor.execute("SELECT * FROM personal_info")
+        cursor.execute('SELECT first_name, last_name, email, street_address, city, state, country, zip_code, girls_name, donation_amount FROM users')
         personal_info_data = cursor.fetchall()
 
         # Close the database connection
@@ -178,64 +205,32 @@ def generate_csv():
         return None
 
 # Function to connect to the SQLite database and read personal_info
-def analyze_personal_info():
+def analyze_personal_info(email):
     try:
         # Connect to the SQLite database
-        conn = sqlite3.connect('user_database.db')
+        conn = sqlite3.connect('nalam_database.db')
         cursor = conn.cursor()
 
-        # Retrieve data from the personal_info table
-        cursor.execute("SELECT zip_code, annual_income, dependents, gender FROM personal_info")
-        personal_info_data = cursor.fetchall()
+        # Fetch personal information from the 'users' table
+        cursor.execute('SELECT first_name, last_name, email, street_address, city, state, country, zip_code, girls_name, donation_amount FROM users')
+        personal_info = cursor.fetchall()
 
         # Close the database connection
         conn.close()
 
-        # Analyze the data, for example, calculate some statistics
-        total_records = len(personal_info_data)
-        total_income = sum(info[1] for info in personal_info_data)
-        average_income = total_income / total_records
-
         # Return the analysis results
-        return {
-            "total_records": total_records,
-            "average_income": average_income,
-            "personal_info_data": personal_info_data
-        }
+        return personal_info
 
     except sqlite3.Error as e:
         # Handle any potential errors when connecting to the database
         print("Error:", str(e))
         return None
     
-# Function to fetch and count gender statistics from the database
-def get_gender_statistics():
-    try:
-        # Connect to the SQLite database
-        conn = sqlite3.connect('user_database.db')
-        cursor = conn.cursor()
-
-        # Query to count the occurrences of each gender in the personal_info table
-        cursor.execute("SELECT gender, COUNT(*) FROM personal_info GROUP BY gender")
-        gender_data = cursor.fetchall()
-
-        # Close the database connection
-        conn.close()
-
-        # Create a dictionary to store the gender statistics
-        gender_statistics = {gender: count for gender, count in gender_data}
-
-        return gender_statistics
-
-    except sqlite3.Error as e:
-        # Handle any potential errors when connecting to the database
-        print("Error:", str(e))
-        return None
 
 # Define a function to check if a user is an admin by connecting to the SQLite database
 def is_admin(email):
     # Connect to the SQLite database
-    conn = sqlite3.connect('user_database.db')
+    conn = sqlite3.connect('nalam_database.db')
     cursor = conn.cursor()
 
     # Fetch the user's role from the database based on their email
@@ -264,13 +259,14 @@ def generate_salt():
     return bcrypt.gensalt().decode('utf-8')
 
 def user_is_authenticated(email, password):
-    conn = sqlite3.connect('user_database.db')
+    conn = sqlite3.connect('nalam_database.db')
     cursor = conn.cursor()
 
     # Check if the email exists in the database
     cursor.execute('SELECT email, password, salt FROM users WHERE email = ?', (email,))
 
     user_data = cursor.fetchone()
+    print("user_data",user_data)
     conn.close()
 
     if user_data is not None:
@@ -320,18 +316,20 @@ def userlogin():
                 # Create a session for the admin
                 session['user_username'] = email
                 session['is_admin'] = True
-                print("here")
+                
                 return redirect(url_for('admin_page'))  # Redirect admin to a separate admin page
             else:
                 # Create a session for regular users
                 session['user_username'] = email
                 session['is_admin'] = False
-                return redirect(url_for('protected'))  # Redirect to a protected page
+                return redirect(url_for('protected_story'))  # Redirect to a protected page
 
         # Handle unsuccessful login (e.g., show an error message)
         else:
+            print("email",email)
+            print("password",password)
             # Authentication failed, show an error message using flash
-            flash('Incorrect username or password. Please try again.', 'error')
+            flash('Incorrect email or password. Please try again.', 'error')
             return redirect(url_for('login'))  # Redirect back to the login form
 #---------------------------------
 
@@ -339,10 +337,20 @@ def userlogin():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-
         email = request.form['email']
         password = request.form['password']
         password_confirm = request.form['password-confirm']
+        first_name=request.form['first-name']
+        last_name=request.form['last-name']
+        street_address=request.form['street-address']
+        city=request.form['city']
+        state=request.form['state']
+        country=request.form['country']
+        zip_code=request.form['zip-code']
+        supported_girl=request.form['supported-girl']
+        donation_amount=request.form['donation-amount']
+
+        
         role = 'user'  # Assign a default role, e.g., 'user'
       
         if password != password_confirm:
@@ -352,15 +360,17 @@ def register():
             flash('Password does not meet the password policy requirements.', 'error')
        
         else:
+            
             # Generate a new salt
             salt = generate_salt()
             hashed_password = hash_password(password, salt)
 
-            conn = sqlite3.connect('user_database.db')
+            conn = sqlite3.connect('nalam_database.db')
             cursor = conn.cursor()
 
-            cursor.execute('INSERT INTO users (email, password, role, salt) VALUES (?, ?, ?, ?)',
-                              (email, hashed_password, role, salt))
+             # Extract all form fields
+            cursor.execute('INSERT INTO users (email, password, role, salt, first_name, last_name, street_address, city, state, country, zip_code, girls_name, donation_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                  (email, hashed_password, role, salt, first_name, last_name, street_address, city, state, country, zip_code, supported_girl, donation_amount))
 
             conn.commit()
             conn.close()

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NALAM</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* Center the logo both horizontally and vertically  */
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        }
+       
+        /* Style the logo */
+        .logo {
+            width: 200px;
+        }
+
+        .support-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        form {
+            text-align: center;
+            margin: 20px auto;
+        }
+        button {
+            background-color: #25378A;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .text-container {
+            flex: 1; /* The text container will take the remaining space */
+            padding: 40px; /* Adjust the value as needed to create space on the sides */
+        }
+     
+        .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .image-container {
+            margin-right: 20px; /* Adjust this margin as needed */
+        }
+
+        .text-container {
+            flex: 1;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+</header>
+
+<!---------Top Panel-------->
+<nav class="navigation-panel">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+    </div>
+    <ul class="nav-links">
+
+        <li><a href="/">Home</a></li>
+        <li><a href="/stories">Stories</a></li>
+        <li><a href="/donation">Donate</a></li>
+        <li><a href="/impact">Impact</a></li>
+        <li><a href="/login">Login</a></li>
+       
+    </ul>
+</nav>
+<!------------------------->
+
+
+<main>
+   
+    <h1>Your Contribution Directly Supports</h1>
+    
+    <ul>
+        <li>
+            <p><b>Education beyond Orphanage</b></p>
+            <p>Basic education materials, when fundable, ongoing tuition, classrooms, tech, school equipment.</p>
+        </li>
+        <li>
+            <p><b>Health and Wellbeing Initiatives</b></p>
+            <p>Our Health and Wellness Initiatives focus on improving the well-being of the girls, doctor appointments and care for basic needs when fundable.</p>
+        </li>
+        <li>
+            <p><b>Food, Safety and Projects</b></p>
+            <p>A safe home for orphans to live and study - without violence and abuse - to get nutritious meals and clean water, supplemented by ad hoc projects.</p>
+        </li>
+    </ul>
+   
+    <h1>Support one of the girls:</h1>
+    <!--Pavithra-->
+    <h3>Pavithra, since 2015​​</h3>
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='girl1.jpg') }}" alt="Description of the image" width="150">
+        </div>
+        <div class="text-container">
+            <p><i> Pavithra, a student at the Girls Orphanage, experienced an unimaginable childhood. With her father in prison and mother tragically deceased, she was left in the care of indifferent relatives. A village elder noticed her struggle, leading to her admission in the orphanage. Here, Pavithra found an environment providing her with education and essential resources, a reality her elder sisters were unfortunately deprived of. Thanks to donations, Pavithra and other girls like her have access to education, regular meals, and a caring environment.<i> </p>
+        </div>
+    </div>
+     <!-- Support button placed after the specified section -->
+     <form action="/support-button" method="post">
+        <button type="submit">Support</button>
+    </form>
+
+    <!--Yamini-->
+    <h3>Yamini, since 2021​​</h3>
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='girl2.jpeg') }}" alt="Description of the image" width="150">
+        </div>
+        <div class="text-container">
+            <p><i> Yamini, born on June 19th, 2015, lost her mother early on and was abandoned by her father. Fortunately, a local villager brought her to our girls' orphanage, where she found a new sense of hope and joy. Thanks to generous donations, Yamini and girls like her benefit from education, nutritious meals, and a nurturing atmosphere. Our orphanage's dedicated team and supporters have been instrumental in transforming lives like Yamini's. Your contributions are pivotal in crafting stories of hope and opportunity, not just for Yamini, but for many children in and around the orphanage.<i> </p>
+        </div>
+    </div>
+     <!-- Support button placed after the specified section -->
+     <form action="/support-button" method="post">
+        <button type="submit">Support</button>
+    </form>
+
+</main>
+
+<footer>
+</footer>
+
+</body>
+</html>

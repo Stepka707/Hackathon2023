@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NALAM</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* Center the logo both horizontally and vertically */
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ensure the container takes up the full viewport height */
+        }
+        
+        /* Style the logo */
+        .logo {
+            width: 200px;
+        }
+
+        body {
+            background-color: white;
+        }
+
+
+        .text-container {
+            flex: 1; /* The text container will take the remaining space */
+            padding: 40px; /* Adjust the value as needed to create space on the sides */
+        }
+     
+        .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .image-container {
+            margin-right: 20px; /* Adjust this margin as needed */
+        }
+
+        .text-container {
+            flex: 1;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+</header>
+
+<!---------Top Panel-------->
+<nav class="navigation-panel">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='Logo.png') }}" alt="Logo">
+    </div>
+    <ul class="nav-links">
+
+        <li><a href="/">Home</a></li>
+        <li><a href="/stories">Stories</a></li>
+        <li><a href="/donation">Donate</a></li>
+        <li><a href="/impact">Impact</a></li>
+        <li><a href="/login">Login</a></li>
+       
+    </ul>
+</nav>
+<!------------------------->
+
+
+<main>
+
+    <h1>Distribution of Efforts​​</h1>
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='info1.png') }}" alt="Description of the image" width="400">
+        </div>
+        <div class="text-container">
+            <p> Image discription </p>
+        </div>
+    </div>
+
+
+    <h1>Distribution of Educational Expenses​</h1>
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='info2.png') }}" alt="Description of the image" width="500">
+        </div>
+        <div class="text-container">
+            <p> Image discription </p>
+        </div>
+    </div>
+
+    <h1>Distribution of Food Related Expenses​</h1>
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='info4.png') }}" alt="Description of the image" width="500">
+        </div>
+        <div class="text-container">
+            <p> Image discription </p>
+        </div>
+    </div>
+
+    
+
+    <h1>Distribution of Financial Needs ​</h1>
+    <div class="container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='info3.png') }}" alt="Description of the image" width="500">
+        </div>
+        <div class="text-container">
+            <p> Image discription </p>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+</footer>
+
+</body>
+</html>
